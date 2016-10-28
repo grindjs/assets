@@ -1,11 +1,14 @@
 {
 
 	/**
-		Minification is turned on by default when app.debug is false
+		Optimizations are turned on by default when app.debug is false
 		and turned off by default when it’s set to true.  To override
-		this, explicity set the value below to true or false
+		this, explicity set the value below to true or false.
+
+		Optimizations will vary for each content type, but examples
+		include minifying css and optimizing SVGs
 	 */
-	"auto_minify": null,
+	"should_optimize": null,
 
 	/**
 		Config options for each compiler
@@ -17,27 +20,16 @@
 			"precision": 14
 		},
 
-		"js": {
-			"compress": {
-				"drop_console": true
-			}
-		},
-
-		"css": {
-			"roundingPrecision": 14
-		},
-
-		"svg": {
-			"plugins": [ { "removeTitle": true } ]
-		},
-
 		/**
 			When compiling, extensions in these dirs will be copied
-			over as is without any processing
+			over as is without any compiling, however they‘re still
+			subject to post processing.
 		*/
 		"raw": {
-			"directories": [ "img", "fonts", "font" ],
+			"directories": [ "js", "css", "img", "fonts", "font" ],
 			"extensions": {
+				"css": "text/css",
+				"js": "application/javascript",
 				"eot": "application/vnd.ms-fontobject",
 				"gif": "image/gif",
 				"ico": "image/x-icon",
@@ -49,6 +41,38 @@
 				"ttf": "application/x-font-ttf",
 				"woff": "application/x-font-woff",
 				"woff2": "application/font-woff2"
+			}
+		}
+
+	},
+
+	/**
+		Config options for each post processor
+	*/
+
+	"post_processors": {
+
+		"js": {
+			"minify": {
+				"compress": {
+					"drop_console": true
+				}
+			}
+		},
+
+		"css": {
+			"minify": {
+				"roundingPrecision": 14
+			},
+
+			"autoprefix": {
+				"enabled": true
+			}
+		},
+
+		"svg": {
+			"optimize": {
+				"plugins": [ { "removeTitle": true } ]
 			}
 		}
 
